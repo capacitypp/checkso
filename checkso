@@ -1,0 +1,20 @@
+#!/bin/bash
+cat > checkso.c << "EOF"
+int main() { return 0; }
+EOF
+
+soname=$1
+lib=${soname%.*}
+lib=l${lib#lib}
+
+gcc -o checkso.out checkso.c -$lib
+
+if [ $? -eq 0 ]; then
+	echo "linked successfully."
+else
+	echo "$1 not found."
+fi
+
+rm -rf checkso.out
+rm -rf checkso.c
+
